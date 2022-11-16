@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Gameplay.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/GameplayBot.unity
+    guid: d4cd4b47e605c8040b71d7d2c8eddb11
+  - enabled: 1
+    path: Assets/Scenes/GameplaySplit.unity
+    guid: c9bd6099381fdd148930cdea687654a0
   m_configObjects: {}

@@ -13,8 +13,11 @@ public class CardGameManager : MonoBehaviour, IOnEventCallback
     public GameObject netPlayerPrefab;
     public CardPlayer P1;
     public CardPlayer P2;
-    public int restoreValue = 5;
-    public int damageValue = 15;
+    public PlayerStats defaultPlayerStats = new PlayerStats{
+        MaxHealth = 100,
+        RestoreValue = 5,
+        DamageValue = 15
+    };
     public GameState State, NextState = GameState.NetPlayersInit;
     public GameObject gameOverPanel;
     public Transform bgImage;
@@ -49,6 +52,11 @@ public class CardGameManager : MonoBehaviour, IOnEventCallback
         }else{
             State = GameState.ChooseAttack;
         }
+
+        P1.SetStats(defaultPlayerStats, true);
+        P2.SetStats(defaultPlayerStats, true);
+        P1.IsReady = true;
+        P2.IsReady = true;
     }
 
     private void Update()
@@ -113,14 +121,14 @@ public class CardGameManager : MonoBehaviour, IOnEventCallback
                     if (damagedPlayer == P1)
                     {
                         audioManager.PlaySlashed();
-                        P1.ChangeHealth(-damageValue);
-                        P2.ChangeHealth(restoreValue);
+                        P1.ChangeHealth(-P2.stats.DamageValue);
+                        P2.ChangeHealth(P2.stats.RestoreValue);
                     }
                     else
                     {
                         audioManager.PlayAttack();
-                        P1.ChangeHealth(restoreValue);
-                        P2.ChangeHealth(-damageValue);
+                        P1.ChangeHealth(P1.stats.RestoreValue);
+                        P2.ChangeHealth(-P1.stats.DamageValue);
                     }
 
                     var winner = GetWinner();
@@ -246,8 +254,13 @@ public class CardGameManager : MonoBehaviour, IOnEventCallback
         }
     }
 
-    public void LoadScene(int sceneIndex)
+    public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene(sceneName);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

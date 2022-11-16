@@ -49,4 +49,9 @@ public class ConnectManager : MonoBehaviourPunCallbacks
         
         SceneManager.LoadScene("Lobby");
     }
+
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 }

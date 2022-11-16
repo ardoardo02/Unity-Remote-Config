@@ -1,21 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Bot : MonoBehaviour
 {
     public CardPlayer player;
     public CardGameManager gameManager;
-    public float choosingInterval;
+    public BotStats stats;
 
     private float timer;
 
     int lastSelected = 0;
     Card[] cards;
+    public bool IsReady = false;
 
-    private void Start()
+
+    public void SetStats(BotStats newStats, bool restoreFullHealth = false)
     {
-        cards = GetComponentsInChildren<Card>();
+        this.stats = newStats;
+
+        var newPlayerStats = new PlayerStats{
+            MaxHealth = this.stats.MaxHealth,
+            RestoreValue = this.stats.RestoreValue,
+            DamageValue = this.stats.DamageValue
+        };
+
+        player.SetStats(newPlayerStats, restoreFullHealth);
+    }
+
+    IEnumerator Start()
+    {
+        player.NickName.text = "Bot";
+        cards = player.GetComponentsInChildren<Card>();
+
+        foreach (var card in cards)
+        {
+            card.GetComponent<Button>().interactable = false;
+        }
+        
+        yield return new WaitUntil(() => player.IsReady);
+        SetStats(this.stats);
+        this.IsReady = true;
     }
 
     void Update()
@@ -26,7 +52,7 @@ public class Bot : MonoBehaviour
             return;
         }
 
-        if (timer < choosingInterval)
+        if (timer < stats.ChoosingInterval)
         {
             timer += Time.deltaTime;
             return;

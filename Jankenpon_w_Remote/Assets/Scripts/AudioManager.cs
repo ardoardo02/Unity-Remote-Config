@@ -23,15 +23,17 @@ public class AudioManager : MonoBehaviour
     
     public void PlayWin()
     {
+        BGM.DOKill();
         BGM.DOFade(0.1f, 0.5f).SetDelay(1);
-        Win.Play();
+        Win.PlayDelayed(1);
         // BGM.DOFade(0.5f, 3f).SetDelay(2);
     }
 
     public void PlayLose()
     {
+        BGM.DOKill();
         BGM.DOFade(0.1f, 0.5f).SetDelay(1);
-        Lose.Play();
+        Lose.PlayDelayed(1);
         // BGM.DOFade(0.5f, 3f).SetDelay(2);
     }
 
